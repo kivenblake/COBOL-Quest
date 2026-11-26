@@ -18,14 +18,14 @@ An interactive **retro mainframe RPG, live `PIC` & fixed-point laboratory, `.cob
 ## Quick Start — Choose Your Operating System
 
 ### 1. Windows (Zero Setup — Download & Play!)
-1. Download [**`COBOL-Quest-Windows-x64.zip`**](https://github.com/kivenblake/COBOL-Learning/raw/main/releases/COBOL-Quest-Windows-x64.zip) (3.3 MB).
+1. Download [**`COBOL-Quest-Windows-x64.zip`**](https://github.com/kivenblake/COBOL-Quest/raw/main/releases/COBOL-Quest-Windows-x64.zip) (3.3 MB).
 2. Right-click **`COBOL-Quest-Windows-x64.zip`** → **Extract All...**
 3. Double-click **`Play-COBOL-Quest.bat`** (or **`COBOL-Quest.exe`**)!
 
 ### 2. Linux (Zero Setup — Standalone x86_64 Binary OR Auto-Build!)
 - **Option A — Download Prebuilt Bundle (No `sudo` or compiler required on x86_64):**
   ```bash
-  curl -LO https://github.com/kivenblake/COBOL-Learning/raw/main/releases/COBOL-Quest-Linux-x86_64.tar.gz
+  curl -LO https://github.com/kivenblake/COBOL-Quest/raw/main/releases/COBOL-Quest-Linux-x86_64.tar.gz
   tar -xzf COBOL-Quest-Linux-x86_64.tar.gz
   cd COBOL-Quest-Linux-x86_64
   ./Play-COBOL-Quest.sh
@@ -34,15 +34,15 @@ An interactive **retro mainframe RPG, live `PIC` & fixed-point laboratory, `.cob
 
 - **Option B — Clone & Run (Any architecture including ARM64 / Raspberry Pi):**
   ```bash
-  git clone https://github.com/kivenblake/COBOL-Learning.git
-  cd COBOL-Learning
+  git clone https://github.com/kivenblake/COBOL-Quest.git
+  cd COBOL-Quest
   ./Play-COBOL-Quest.sh
   ```
   *(Automatically offers 1-step `gnucobol` install via `apt`, `dnf`, `pacman`, `zypper`, `apk`, or `xbps` if needed!)*
 
 ### 3. macOS (Apple Silicon M1–M4 & Intel Macs)
 - **Option A — Download macOS Bundle:**
-  1. Download [**`COBOL-Quest-macOS.zip`**](https://github.com/kivenblake/COBOL-Learning/raw/main/releases/COBOL-Quest-macOS.zip) and unzip it.
+  1. Download [**`COBOL-Quest-macOS.zip`**](https://github.com/kivenblake/COBOL-Quest/raw/main/releases/COBOL-Quest-macOS.zip) and unzip it.
   2. In Terminal, `cd` into `COBOL-Quest-macOS` and run:
      ```bash
      ./Play-COBOL-Quest.sh
@@ -53,8 +53,8 @@ An interactive **retro mainframe RPG, live `PIC` & fixed-point laboratory, `.cob
 - **Option B — Git Clone + Homebrew:**
   ```bash
   brew install gnucobol
-  git clone https://github.com/kivenblake/COBOL-Learning.git
-  cd COBOL-Learning
+  git clone https://github.com/kivenblake/COBOL-Quest.git
+  cd COBOL-Quest
   ./Play-COBOL-Quest.sh
   ```
 
@@ -117,7 +117,7 @@ scripts\build-windows.bat
 ## Project Structure
 
 ```text
-COBOL-Learning/
+COBOL-Quest/
 ├── Play-COBOL-Quest.bat             # Windows double-click launcher
 ├── Play-COBOL-Quest.command         # macOS Finder double-click launcher
 ├── Play-COBOL-Quest.sh              # Universal Linux & macOS launcher
