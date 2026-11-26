@@ -19,7 +19,7 @@ An interactive **retro mainframe RPG, live `PIC` & fixed-point laboratory, `.cob
 
 You don't need to install any compiler to start playing right away:
 
-1. Go to [**Releases**](https://github.com/kivenblake/COBOL-Learning/releases/latest) and download **`COBOL-Quest-Windows-x64.zip`**.
+1. Download [**`COBOL-Quest-Windows-x64.zip`**](https://github.com/kivenblake/COBOL-Learning/raw/main/releases/COBOL-Quest-Windows-x64.zip) (also linked on the [Releases](https://github.com/kivenblake/COBOL-Learning/releases) page, or inside `releases/` if you click **Code -> Download ZIP**).
 2. Right-click **`COBOL-Quest-Windows-x64.zip`** and click **Extract All...**
 3. Open the extracted folder and double-click **`Play-COBOL-Quest.bat`** (or **`COBOL-Quest.exe`**)!
 
