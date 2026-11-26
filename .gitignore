@@ -1,6 +1,7 @@
 # Compiled binaries & build outputs
 bin/
 dist/
+/cobol-quest
 *.exe
 *.dll
 *.so

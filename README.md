@@ -7,7 +7,7 @@ An interactive **retro mainframe RPG, live `PIC` & fixed-point laboratory, `.cob
 |   ___  ___  ___   ___  _        ___  _   _ ___ ___ _____           |
 |  / __|/ _ \| _ ) / _ \| |      / _ \| | | | __/ __|_   _|          |
 | | (__| (_) | _ \| (_) | |__   | (_) | |_| | _|\__ \ | |            |
-|  \___|\___/|___/ \___/|____|   \__\_\\___/|___|___/ |_|   v1.0     |
+|  \___|\___/|___/ \___/|____|   \__\_\\___/|___|___/ |_|   v1.1     |
 |                                                                    |
 |        IRON-7090 MAINFRAME CHRONICLES // WRITTEN IN COBOL!         |
 +====================================================================+
@@ -15,15 +15,56 @@ An interactive **retro mainframe RPG, live `PIC` & fixed-point laboratory, `.cob
 
 ---
 
-## Quick Start on Windows (Zero Setup — Download & Play!)
+## Quick Start — Choose Your Operating System
 
-You don't need to install any compiler to start playing right away:
+### 1. Windows (Zero Setup — Download & Play!)
+1. Download [**`COBOL-Quest-Windows-x64.zip`**](https://github.com/kivenblake/COBOL-Learning/raw/main/releases/COBOL-Quest-Windows-x64.zip) (3.3 MB).
+2. Right-click **`COBOL-Quest-Windows-x64.zip`** → **Extract All...**
+3. Double-click **`Play-COBOL-Quest.bat`** (or **`COBOL-Quest.exe`**)!
 
-1. Download [**`COBOL-Quest-Windows-x64.zip`**](https://github.com/kivenblake/COBOL-Learning/raw/main/releases/COBOL-Quest-Windows-x64.zip) (also linked on the [Releases](https://github.com/kivenblake/COBOL-Learning/releases) page, or inside `releases/` if you click **Code -> Download ZIP**).
-2. Right-click **`COBOL-Quest-Windows-x64.zip`** and click **Extract All...**
-3. Open the extracted folder and double-click **`Play-COBOL-Quest.bat`** (or **`COBOL-Quest.exe`**)!
+### 2. Linux (Zero Setup — Standalone x86_64 Binary OR Auto-Build!)
+- **Option A — Download Prebuilt Bundle (No `sudo` or compiler required on x86_64):**
+  ```bash
+  curl -LO https://github.com/kivenblake/COBOL-Learning/raw/main/releases/COBOL-Quest-Linux-x86_64.tar.gz
+  tar -xzf COBOL-Quest-Linux-x86_64.tar.gz
+  cd COBOL-Quest-Linux-x86_64
+  ./Play-COBOL-Quest.sh
+  ```
+  *(Both GnuCOBOL's `libcob` and `libgmp` are statically linked in, so `./cobol-quest` runs out of the box across Ubuntu, Debian, Fedora, Arch, Linux Mint, Pop!_OS, openSUSE, and WSL!)*
 
-> **Terminal Tip:** Windows 11 Terminal and PowerShell support retro IBM phosphor ANSI colors automatically. If you ever run inside an older console window and want plain monochrome ASCII, just press **`C`** on the Main Menu!
+- **Option B — Clone & Run (Any architecture including ARM64 / Raspberry Pi):**
+  ```bash
+  git clone https://github.com/kivenblake/COBOL-Learning.git
+  cd COBOL-Learning
+  ./Play-COBOL-Quest.sh
+  ```
+  *(Automatically offers 1-step `gnucobol` install via `apt`, `dnf`, `pacman`, `zypper`, `apk`, or `xbps` if needed!)*
+
+### 3. macOS (Apple Silicon M1–M4 & Intel Macs)
+- **Option A — Download macOS Bundle:**
+  1. Download [**`COBOL-Quest-macOS.zip`**](https://github.com/kivenblake/COBOL-Learning/raw/main/releases/COBOL-Quest-macOS.zip) and unzip it.
+  2. In Terminal, `cd` into `COBOL-Quest-macOS` and run:
+     ```bash
+     ./Play-COBOL-Quest.sh
+     ```
+     — **or** double-click **`Play-COBOL-Quest.command`** in Finder! *(Tip: if macOS Gatekeeper prompts on first Finder open, right-click `Play-COBOL-Quest.command` → **Open**, or run `xattr -d com.apple.quarantine Play-COBOL-Quest.command`.)*
+  3. If GnuCOBOL isn't installed yet, the launcher offers a 1-step install via Homebrew (`brew install gnucobol`), compiles natively for your Mac in under a second, and launches the game!
+
+- **Option B — Git Clone + Homebrew:**
+  ```bash
+  brew install gnucobol
+  git clone https://github.com/kivenblake/COBOL-Learning.git
+  cd COBOL-Learning
+  ./Play-COBOL-Quest.sh
+  ```
+
+### 4. Docker (Works on macOS, Linux & Windows — Zero Host Dependencies)
+```bash
+docker build -t cobol-quest .
+docker run -it --rm cobol-quest
+```
+
+> **Terminal Tip:** Modern terminals on Windows 11, macOS, and Linux support retro IBM phosphor ANSI colors out of the box. If you ever run in a plain monochrome console, press **`C`** on the Main Menu!
 
 ---
 
@@ -44,7 +85,7 @@ You are a newly badged **Mainframe Engineer** in Basement Sub-Level 4 tasked wit
 
 ## Companion COBOL Programs (`examples/`)
 
-Every mission in the game has a matching, heavily-commented `.cob` source file in `examples/` (and precompiled `.exe` files in the Windows Release zip!):
+Every mission in the game has a matching, heavily-commented `.cob` source file in `examples/` (plus precompiled binaries in the Windows & Linux bundles!):
 
 1. **`examples/01-hello-mainframe.cob`** — Authentic 1960s 80-column Punch-Card Fixed-Format COBOL!
 2. **`examples/02-pic-showcase.cob`** — `WORKING-STORAGE` & `PIC` check-protection / `CR` formatting
@@ -57,27 +98,18 @@ Every mission in the game has a matching, heavily-commented `.cob` source file i
 
 ---
 
-## Compiling From Source (Optional — Edit & Build Your Own COBOL!)
+## Developer & `make` Commands (macOS / Linux / Windows)
 
-Want to modify `src/cobol-quest.cob` or compile the `my_sandbox.cob` file you generated inside Mode `[3]`?
-
-### Windows
-1. Right-click **`scripts\install-gnucobol-windows.ps1`** and select **Run with PowerShell** (installs open-source **GnuCOBOL** via `winget` + MSYS2 and adds `cobc` to your `PATH`).
-2. Double-click **`scripts\build-windows.bat`** to compile `COBOL-Quest.exe`, all 8 `examples\*.cob` programs, and `my_sandbox.cob`!
-
-### Linux & macOS
 ```bash
-# Ubuntu / Debian
-sudo apt install gnucobol
+# macOS & Linux (Makefile)
+make install-deps   # Auto-install GnuCOBOL via Homebrew/apt/dnf/pacman/etc.
+make run            # Compile & launch COBOL QUEST
+make examples       # Compile & execute all 8 companion examples
+make test           # Run the full automated playthrough & compiler smoke tests
 
-# macOS (Homebrew)
-brew install gnucobol
-
-# Build & Launch COBOL QUEST:
-./scripts/build-unix.sh
-
-# Run the automated end-to-end test suite:
-./tests/smoke-test.sh
+# Windows (PowerShell / CMD)
+powershell -ExecutionPolicy Bypass -File scripts\install-gnucobol-windows.ps1
+scripts\build-windows.bat
 ```
 
 ---
@@ -87,6 +119,11 @@ brew install gnucobol
 ```text
 COBOL-Learning/
 ├── Play-COBOL-Quest.bat             # Windows double-click launcher
+├── Play-COBOL-Quest.command         # macOS Finder double-click launcher
+├── Play-COBOL-Quest.sh              # Universal Linux & macOS launcher
+├── Makefile                         # make run / examples / test / install-deps
+├── Dockerfile                       # Zero-host-install container option
+├── releases/                        # Downloadable Windows, Linux & macOS bundles
 ├── src/
 │   ├── cobol-quest.cob              # Main COBOL QUEST RPG & Interactive Tutor
 │   └── copybooks/
@@ -95,6 +132,6 @@ COBOL-Learning/
 │       ├── missions-proc.cpy        # 8 Story Missions + 3-Wave Boss Battle
 │       └── labs-proc.cpy            # Live PIC Lab, Code Generator, Bug Arcade & Ref
 ├── examples/                        # 8 standalone runnable COBOL programs + data
-├── scripts/                         # Windows (.bat/.ps1) & Unix (.sh) build helpers
+├── scripts/                         # Windows (.bat/.ps1) & Unix (.sh) setup/build scripts
 └── tests/smoke-test.sh              # Automated full-playthrough & compiler test suite
 ```
