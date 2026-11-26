@@ -1,0 +1,13 @@
+# Compiled binaries & build outputs
+bin/
+dist/
+*.exe
+*.dll
+*.so
+*.dylib
+*.o
+
+# Runtime player files (created dynamically by COBOL QUEST)
+savegame.dat
+my_sandbox.cob
+my_sandbox
