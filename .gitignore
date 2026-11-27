@@ -1,14 +1,20 @@
-# Compiled binaries & build outputs
+# Compiled local build outputs (keep prebuilt root COBOL-Quest.exe & runtime/windows-x64!)
 bin/
 dist/
 /cobol-quest
-*.exe
-*.dll
 *.so
 *.dylib
 *.o
 
-# Runtime player files (created dynamically by COBOL QUEST)
+# Ignore stray .exe/.dll except our tracked ready-to-play Windows executable & runtime
+*.exe
+*.dll
+!/COBOL-Quest.exe
+!/runtime/windows-x64/*.exe
+!/runtime/windows-x64/*.dll
+
+# Runtime player files & logs (created dynamically)
 savegame.dat
 my_sandbox.cob
 my_sandbox
+install-gnucobol.log

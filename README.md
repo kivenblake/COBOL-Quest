@@ -17,10 +17,13 @@ An interactive **retro mainframe RPG, live `PIC` & fixed-point laboratory, `.cob
 
 ## Quick Start — Choose Your Operating System
 
-### 1. Windows (Zero Setup — Download & Play!)
-1. Download [**`COBOL-Quest-Windows-x64.zip`**](https://github.com/kivenblake/COBOL-Quest/raw/main/releases/COBOL-Quest-Windows-x64.zip) (3.3 MB).
-2. Right-click **`COBOL-Quest-Windows-x64.zip`** → **Extract All...**
-3. Double-click **`Play-COBOL-Quest.bat`** (or **`COBOL-Quest.exe`**)!
+### 1. Windows (Zero Setup — Ready to Double-Click!)
+- **If you downloaded or cloned this repository (`Code -> Download ZIP` or `git clone`):**
+  - Open the folder and double-click **`COBOL-Quest.exe`** (or **`Play-COBOL-Quest.bat`**) right in the top folder — the compiled COBOL program and runtime are already bundled inside `runtime\windows-x64\`!
+- **Or download the standalone release zip:**
+  1. Download [**`COBOL-Quest-Windows-x64.zip`**](https://github.com/kivenblake/COBOL-Quest/raw/main/releases/COBOL-Quest-Windows-x64.zip) (3.3 MB).
+  2. Right-click **`COBOL-Quest-Windows-x64.zip`** → **Extract All...**
+  3. Double-click **`COBOL-Quest.exe`** (or **`Play-COBOL-Quest.bat`**)!
 
 ### 2. Linux (Zero Setup — Standalone x86_64 Binary OR Auto-Build!)
 - **Option A — Download Prebuilt Bundle (No `sudo` or compiler required on x86_64):**
@@ -107,8 +110,8 @@ make run            # Compile & launch COBOL QUEST
 make examples       # Compile & execute all 8 companion examples
 make test           # Run the full automated playthrough & compiler smoke tests
 
-# Windows (PowerShell / CMD)
-powershell -ExecutionPolicy Bypass -File scripts\install-gnucobol-windows.ps1
+# Windows (Optional — only needed if you want to edit & recompile .cob files!)
+# Double-click scripts\Install-GnuCOBOL-Windows.bat (bypasses PowerShell ExecutionPolicy), then:
 scripts\build-windows.bat
 ```
 
