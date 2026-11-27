@@ -2,11 +2,14 @@
 # ===================================================================
 # install-gnucobol-unix.sh
 # Cross-platform GnuCOBOL (cobc) installer for macOS & Linux!
-# Supports Homebrew, MacPorts, apt, dnf, pacman, zypper, apk & xbps.
+# Logs output to install-gnucobol.log if anything fails and offers
+# automatic Homebrew bootstrap on fresh Macs.
 # ===================================================================
-set -euo pipefail
+set -uo pipefail
 
-# Include standard macOS Homebrew / MacPorts paths
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+LOG_FILE="$ROOT_DIR/install-gnucobol.log"
+
 export PATH="/opt/homebrew/bin:/usr/local/bin:/opt/local/bin:$PATH"
 
 echo "=== COBOL QUEST: macOS & Linux GnuCOBOL Compiler Setup ==="
@@ -18,22 +21,37 @@ if command -v cobc >/dev/null 2>&1; then
 fi
 
 OS_NAME="$(uname -s)"
+STATUS=0
 
 case "$OS_NAME" in
   Darwin)
     echo "[macOS Detected] Checking package managers..."
-    if command -v brew >/dev/null 2>&1; then
+    if ! command -v brew >/dev/null 2>&1 && ! command -v port >/dev/null 2>&1; then
+      echo "[!] Neither Homebrew nor MacPorts was found on this Mac."
+      echo "    (Note: Installing Homebrew may prompt for your Mac password and"
+      echo "     Apple's Xcode Command Line Tools on a brand-new Mac.)"
+      printf "    Would you like to install Homebrew automatically now? [Y/n]: "
+      read -r BREW_REPLY || BREW_REPLY="n"
+      case "${BREW_REPLY:-Y}" in
+        [Yy]*|"")
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || STATUS=$?
+          export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+          ;;
+        *)
+          echo "    Install Homebrew anytime from https://brew.sh and re-run!"
+          exit 1
+          ;;
+      esac
+    fi
+
+    if [ "$STATUS" -eq 0 ] && command -v brew >/dev/null 2>&1; then
       echo "-> Installing GnuCOBOL via Homebrew (brew install gnucobol)..."
-      brew install gnucobol
-    elif command -v port >/dev/null 2>&1; then
+      brew install gnucobol 2>&1 | tee "$LOG_FILE"
+      STATUS=${PIPESTATUS[0]}
+    elif [ "$STATUS" -eq 0 ] && command -v port >/dev/null 2>&1; then
       echo "-> Installing GnuCOBOL via MacPorts (sudo port install gnucobol)..."
-      sudo port install gnucobol
-    else
-      echo "[!] Homebrew was not found on this Mac."
-      echo "    Install Homebrew first with:"
-      echo '    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
-      echo "    Then re-run ./Play-COBOL-Quest.command (or run: brew install gnucobol)"
-      exit 1
+      sudo port install gnucobol 2>&1 | tee "$LOG_FILE"
+      STATUS=${PIPESTATUS[0]}
     fi
     ;;
 
@@ -41,40 +59,49 @@ case "$OS_NAME" in
     echo "[Linux Detected] Detecting system package manager..."
     if command -v apt-get >/dev/null 2>&1; then
       echo "-> Installing via apt-get (Debian / Ubuntu / Mint / Pop!_OS / WSL)..."
-      sudo apt-get update && sudo apt-get install -y gnucobol
+      (sudo apt-get update && sudo apt-get install -y gnucobol) 2>&1 | tee "$LOG_FILE"
+      STATUS=${PIPESTATUS[0]}
     elif command -v dnf >/dev/null 2>&1; then
       echo "-> Installing via dnf (Fedora / RHEL / Rocky / AlmaLinux)..."
-      sudo dnf install -y gnucobol
+      sudo dnf install -y gnucobol 2>&1 | tee "$LOG_FILE"
+      STATUS=${PIPESTATUS[0]}
     elif command -v pacman >/dev/null 2>&1; then
       echo "-> Installing via pacman (Arch / Manjaro / EndeavourOS / SteamOS)..."
-      sudo pacman -S --needed gnucobol
+      sudo pacman -S --needed gnucobol 2>&1 | tee "$LOG_FILE"
+      STATUS=${PIPESTATUS[0]}
     elif command -v zypper >/dev/null 2>&1; then
       echo "-> Installing via zypper (openSUSE)..."
-      sudo zypper install -y gnu-cobol
+      sudo zypper install -y gnu-cobol 2>&1 | tee "$LOG_FILE"
+      STATUS=${PIPESTATUS[0]}
     elif command -v apk >/dev/null 2>&1; then
       echo "-> Installing via apk (Alpine Linux)..."
-      sudo apk add gnucobol
+      sudo apk add gnucobol 2>&1 | tee "$LOG_FILE"
+      STATUS=${PIPESTATUS[0]}
     elif command -v xbps-install >/dev/null 2>&1; then
       echo "-> Installing via xbps-install (Void Linux)..."
-      sudo xbps-install -S gnucobol
+      sudo xbps-install -S gnucobol 2>&1 | tee "$LOG_FILE"
+      STATUS=${PIPESTATUS[0]}
     else
       echo "[!] Could not auto-detect your Linux package manager."
-      echo "    Please install the 'gnucobol' (or 'gnu-cobol') package using your distro's package manager."
+      echo "    Please install 'gnucobol' (or 'gnu-cobol') using your distro's package manager."
       exit 1
     fi
     ;;
 
   *)
-    echo "[!] Unsupported OS ($OS_NAME). On Windows, use Play-COBOL-Quest.bat or scripts/install-gnucobol-windows.ps1."
+    echo "[!] Unsupported OS ($OS_NAME). On Windows, double-click COBOL-Quest.exe or scripts/Install-GnuCOBOL-Windows.bat."
     exit 1
     ;;
 esac
 
 echo ""
-if command -v cobc >/dev/null 2>&1; then
+if [ "$STATUS" -eq 0 ] && command -v cobc >/dev/null 2>&1; then
+  rm -f "$LOG_FILE"
   echo "[SUCCESS] GnuCOBOL installed successfully!"
   cobc --version | head -n 1
+  exit 0
 else
-  echo "[ERROR] Installation finished, but 'cobc' was not found on PATH."
+  echo "[ERROR] GnuCOBOL installation exited with status $STATUS."
+  echo "        Details saved to: $LOG_FILE"
   exit 1
 fi

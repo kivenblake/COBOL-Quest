@@ -10,13 +10,13 @@ COBCFLAGS := -x -Wall
 all: build
 
 build:
-	@./scripts/build-unix.sh --build-only
+	@bash ./scripts/build-unix.sh --build-only
 
 run: build
 	@./bin/cobol-quest
 
 install-deps:
-	@./scripts/install-gnucobol-unix.sh
+	@bash ./scripts/install-gnucobol-unix.sh
 
 examples: build
 	@for exe in bin/0*; do \
@@ -28,7 +28,7 @@ examples: build
 	done
 
 test:
-	@./tests/smoke-test.sh
+	@bash ./tests/smoke-test.sh
 
 clean:
 	rm -rf bin

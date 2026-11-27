@@ -25,41 +25,30 @@ An interactive **retro mainframe RPG, live `PIC` & fixed-point laboratory, `.cob
   2. Right-click **`COBOL-Quest-Windows-x64.zip`** → **Extract All...**
   3. Double-click **`COBOL-Quest.exe`** (or **`Play-COBOL-Quest.bat`**)!
 
-### 2. Linux (Zero Setup — Standalone x86_64 Binary OR Auto-Build!)
-- **Option A — Download Prebuilt Bundle (No `sudo` or compiler required on x86_64):**
+### 2. Linux (Zero Setup — Ready to Run!)
+- **If you downloaded or cloned this repository (`Code -> Download ZIP` or `git clone`):**
+  ```bash
+  bash Play-COBOL-Quest.sh
+  ```
+  *(On `x86_64` Linux, this runs the bundled zero-dependency binary in `runtime/linux-x86_64/cobol-quest` immediately with **no `sudo` or compiler required**! On `ARM64` / Raspberry Pi, it automatically compiles from source or offers a 1-step `gnucobol` install.)*
+- **Or download the standalone Linux archive:**
   ```bash
   curl -LO https://github.com/kivenblake/COBOL-Quest/raw/main/releases/COBOL-Quest-Linux-x86_64.tar.gz
   tar -xzf COBOL-Quest-Linux-x86_64.tar.gz
   cd COBOL-Quest-Linux-x86_64
-  ./Play-COBOL-Quest.sh
+  bash Play-COBOL-Quest.sh
   ```
-  *(Both GnuCOBOL's `libcob` and `libgmp` are statically linked in, so `./cobol-quest` runs out of the box across Ubuntu, Debian, Fedora, Arch, Linux Mint, Pop!_OS, openSUSE, and WSL!)*
-
-- **Option B — Clone & Run (Any architecture including ARM64 / Raspberry Pi):**
-  ```bash
-  git clone https://github.com/kivenblake/COBOL-Quest.git
-  cd COBOL-Quest
-  ./Play-COBOL-Quest.sh
-  ```
-  *(Automatically offers 1-step `gnucobol` install via `apt`, `dnf`, `pacman`, `zypper`, `apk`, or `xbps` if needed!)*
 
 ### 3. macOS (Apple Silicon M1–M4 & Intel Macs)
-- **Option A — Download macOS Bundle:**
-  1. Download [**`COBOL-Quest-macOS.zip`**](https://github.com/kivenblake/COBOL-Quest/raw/main/releases/COBOL-Quest-macOS.zip) and unzip it.
-  2. In Terminal, `cd` into `COBOL-Quest-macOS` and run:
+- **Recommended — Terminal Launch (Bypasses Gatekeeper & `chmod` issues):**
+  1. Download the repo (`Code -> Download ZIP` or [**`COBOL-Quest-macOS.zip`**](https://github.com/kivenblake/COBOL-Quest/raw/main/releases/COBOL-Quest-macOS.zip)) and unzip it.
+  2. Open **Terminal**, `cd` into the folder, and run:
      ```bash
-     ./Play-COBOL-Quest.sh
+     bash Play-COBOL-Quest.sh
      ```
-     — **or** double-click **`Play-COBOL-Quest.command`** in Finder! *(Tip: if macOS Gatekeeper prompts on first Finder open, right-click `Play-COBOL-Quest.command` → **Open**, or run `xattr -d com.apple.quarantine Play-COBOL-Quest.command`.)*
-  3. If GnuCOBOL isn't installed yet, the launcher offers a 1-step install via Homebrew (`brew install gnucobol`), compiles natively for your Mac in under a second, and launches the game!
-
-- **Option B — Git Clone + Homebrew:**
-  ```bash
-  brew install gnucobol
-  git clone https://github.com/kivenblake/COBOL-Quest.git
-  cd COBOL-Quest
-  ./Play-COBOL-Quest.sh
-  ```
+  3. If GnuCOBOL isn't installed yet, the launcher offers to install Homebrew (if needed) + `gnucobol`, compiles natively for your Mac in under a second, and starts the game!
+- **Alternative — Double-Click in Finder:**
+  - Double-click **`Play-COBOL-Quest.command`**. *(Note: macOS Gatekeeper blocks downloaded `.command` scripts on first open — if prompted, right-click `Play-COBOL-Quest.command` → **Open** → **Open**, or use `bash Play-COBOL-Quest.sh` in Terminal above.)*
 
 ### 4. Docker (Works on macOS, Linux & Windows — Zero Host Dependencies)
 ```bash
