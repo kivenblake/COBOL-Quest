@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 WORK_DIR="$(mktemp -d)"
 trap 'rm -rf "$WORK_DIR"' EXIT
 
-echo "=== [1/4] Compiling COBOL QUEST & 8 Examples ==="
+echo "=== [1/4] Compiling COBOL QUEST v2.0 & 8 Examples ==="
 mkdir -p "$WORK_DIR/bin"
 cobc -x -Wall -I "$ROOT_DIR/src/copybooks" "$ROOT_DIR/src/cobol-quest.cob" -o "$WORK_DIR/bin/cobol-quest"
 
@@ -14,7 +14,7 @@ for src in "$ROOT_DIR"/examples/*.cob; do
   cobc -x -Wall "$src" -o "$WORK_DIR/bin/$base"
 done
 
-echo "=== [2/4] Running Automated Playthrough (All 8 Missions + Boss + Labs) ==="
+echo "=== [2/4] Running Full Playthrough (All 8 Chapters + Variant Rotation + Labs) ==="
 cat << 'EOF' | (cd "$WORK_DIR" && ./bin/cobol-quest >/dev/null)
 GRACE-H
 
@@ -22,45 +22,88 @@ C
 1
 1
 
-B
+A
+
+C
+HINT
+HINT
+DISPLAY HELLO MAINFRAME.
+DISPLAY "HELLO MAINFRAME"
+
+DISPLAY "SYSTEM ONLINE".
+
+
 PROGRAM-ID. VAULT.
+
 
 2
 
-B
-01 BALANCE PIC 9(5)V99.
+
+A
+*> DAILY BACKUP
+
+DATA DIVISION.
+
 
 3
 
+
+
 B
-MOVE 500 TO BALANCE.
+01 USER-CITY PIC X(12).
+
+01 BALANCE PIC S9(5)V99.
+
 
 4
 
+
 B
-ADD INTEREST TO BALANCE ROUNDED.
+BALANCE = 500
+MOVE BALANCE TO 500.
+
+MOVE 25 TO TICKETS.
+
+ACCEPT GUEST-NAME.
+
 
 5
 
-B
-88 VIP-CLIENT VALUE "Y".
+
+A
+ADD INTEREST TO BALANCE ROUNDED.
+
+COMPUTE GROSS-PAY ROUNDED = HOURS * RATE.
+
 
 6
 
+
 B
-PERFORM PRINT-LINE 5 TIMES.
+IF SCORE = 100 DISPLAY "PERFECT" END-IF.
+
+88 VIP-CLIENT VALUE "Y".
+
 
 7
+
+
+A
+PERFORM PRINT-LINE 5 TIMES.
+
+PERFORM READ-NEXT UNTIL FILE-DONE.
+
+
+8
+
 
 B
 05 MONTH-SALES PIC 9(6) OCCURS 12 TIMES.
 
-8
-
 OPEN INPUT PAYROLL-FILE.
-A
-B
+
 CLOSE PAYROLL-FILE.
+
 
 B
 2
@@ -80,6 +123,8 @@ B
 A
 
 5
+0
+
 1
 
 2
@@ -94,7 +139,7 @@ B
 Q
 EOF
 
-echo "=== [3/4] Verifying COBOL Save File & Generated my_sandbox.cob ==="
+echo "=== [3/4] Verifying COBOL Save File (8/8 Mastered) & Generated my_sandbox.cob ==="
 grep -q "COBQUEST01GRACE-H" "$WORK_DIR/savegame.dat"
 grep -q "YYYYYYYY" "$WORK_DIR/savegame.dat"
 cobc -x -Wall "$WORK_DIR/my_sandbox.cob" -o "$WORK_DIR/bin/my_sandbox"

@@ -1,10 +1,11 @@
        >>SOURCE FORMAT FREE
 *> ===================================================================
-*> PROGRAM : COBOL-QUEST (IRON-7090 MAINFRAME CHRONICLES)
+*> PROGRAM : COBOL-QUEST (ZERO-TO-MASTER MAINFRAME CHRONICLES v2.0)
 *> AUTHOR  : Built in 100% GnuCOBOL for Interactive COBOL Learning
-*> PURPOSE : An interactive RPG adventure, live PIC/math laboratory,
-*>           code generator, bug-hunting arcade, and pocket reference
-*>           designed to make learning COBOL fun and hands-on!
+*> PURPOSE : Takes a complete newcomer (with ZERO prior programming
+*>           experience!) step-by-step to COBOL Mastery through
+*>           plain-English lessons, adaptive quizzes, non-spoiler
+*>           hints, failure walkthroughs, and 3-variant coding drills!
 *> ===================================================================
        IDENTIFICATION DIVISION.
        PROGRAM-ID. COBOL-QUEST.
@@ -42,6 +43,7 @@
        WORKING-STORAGE SECTION.
        COPY "quest-state.cpy".
        COPY "ansi-ui.cpy".
+       COPY "drill-engine-data.cpy".
 
        *> Menu & Navigation Controls
        01  WS-NAV-CONTROLS.
@@ -56,34 +58,11 @@
            05  WS-IDX-DISP             PIC 9     VALUE 1.
            05  WS-MISSION-NUM          PIC 99    VALUE 0.
 
-       *> Quiz & Live COBOL Coding Terminal Engine
-       01  WS-CHALLENGE-ENGINE.
+       *> Rewards & Arcade Input
+       01  WS-REWARD-VARS.
            05  WS-QUIZ-ANS             PIC X(16) VALUE SPACES.
-           05  WS-QUIZ-DONE            PIC X     VALUE "N".
-           05  WS-CODE-INPUT           PIC X(80) VALUE SPACES.
-           05  WS-CODE-UPPER           PIC X(80) VALUE SPACES.
-           05  WS-CODE-SOLVED          PIC X     VALUE "N".
-           05  WS-CHALLENGE-ID         PIC 99    VALUE 0.
-           05  WS-HINT-TEXT            PIC X(76) VALUE SPACES.
-           05  WS-MODEL-ANSWER         PIC X(76) VALUE SPACES.
-           05  WS-PROMPT-DESC          PIC X(76) VALUE SPACES.
-           05  WS-CNT-1                PIC 99    VALUE 0.
-           05  WS-CNT-2                PIC 99    VALUE 0.
-           05  WS-CNT-3                PIC 99    VALUE 0.
-           05  WS-CNT-4                PIC 99    VALUE 0.
-           05  WS-CNT-5                PIC 99    VALUE 0.
-           05  WS-CNT-EQ               PIC 99    VALUE 0.
-           05  WS-TRIM-LEN             PIC 99    VALUE 0.
-           05  WS-LAST-CH              PIC X     VALUE SPACE.
            05  WS-XP-GAIN              PIC 9(4)  VALUE 0.
            05  WS-XP-GAIN-FMT          PIC Z,ZZ9.
-
-       *> Boss Encounter (Mission 8: Midnight Payroll Batch)
-       01  WS-BOSS-STATE.
-           05  WS-MAINFRAME-HP         PIC S9(3) VALUE 100.
-           05  WS-BOSS-HP              PIC S9(3) VALUE 300.
-           05  WS-HP-FMT               PIC ZZ9.
-           05  WS-BOSS-FMT             PIC ZZ9.
 
        *> Interactive PIC & Fixed-Point Math Lab Variables
        01  WS-PIC-LAB.
@@ -180,13 +159,13 @@
                "| | (__| (_) | _ \| (_) | |__   | (_) | |_| | _|\__ \ | |            |"
                FUNCTION TRIM(C-RST)
            DISPLAY FUNCTION TRIM(C-CYN)
-               "|  \___|\___/|___/ \___/|____|   \__\_\\___/|___|___/ |_|   v1.0     |"
+               "|  \___|\___/|___/ \___/|____|   \__\_\\___/|___|___/ |_|   v2.0     |"
                FUNCTION TRIM(C-RST)
            DISPLAY FUNCTION TRIM(C-GRN)
                "|                                                                    |"
                FUNCTION TRIM(C-RST)
            DISPLAY FUNCTION TRIM(C-YLW)
-               "|        IRON-7090 MAINFRAME CHRONICLES // WRITTEN IN COBOL!         |"
+               "|      ZERO-TO-MASTER EDITION // LEARN COBOL FROM SCRATCH!           |"
                FUNCTION TRIM(C-RST)
            DISPLAY FUNCTION TRIM(C-GRN)
                "+====================================================================+"
@@ -213,11 +192,12 @@
                            END-IF
                            PERFORM 0400-RECALC-RANK-AND-BAR
                            DISPLAY FUNCTION TRIM(C-GRN)
-                               "  [TAPE MOUNTED] Welcome back, Engineer "
+                               "  [PROFILE LOADED] Welcome back, "
                                FUNCTION TRIM(WS-PLAYER-NAME) "!"
                                FUNCTION TRIM(C-RST)
-                           DISPLAY "  Loaded profile from savegame.dat ("
-                               WS-CORES-ONLINE "/8 Subsystems Online)."
+                           DISPLAY "  Chapters Mastered: "
+                               WS-CORES-ONLINE " / 8  |  Rank: "
+                               FUNCTION TRIM(WS-RANK-TITLE)
                            PERFORM 9000-PRESS-ENTER
                        ELSE
                            PERFORM 0250-NEW-ENGINEER-ONBOARD
@@ -229,20 +209,21 @@
 
        0250-NEW-ENGINEER-ONBOARD.
            DISPLAY FUNCTION TRIM(C-CYN)
-               "  [SUB-LEVEL 4 ALERT] Mainframe IRON-7090 is running on backup power!"
+               "  Welcome! Never written a single line of code before? Perfect!"
                FUNCTION TRIM(C-RST)
-           DISPLAY "  Global ATMs, train schedules, and payroll batch jobs depend on you."
-           DISPLAY "  Restore all 8 COBOL Subsystems to save the Big Iron!"
+           DISPLAY "  COBOL QUEST teaches you programming from absolute zero all the"
+           DISPLAY "  way to COBOL mastery -- using plain English, visual examples,"
+           DISPLAY "  concept quizzes, and practice variants until every idea clicks."
            DISPLAY " "
            DISPLAY FUNCTION TRIM(C-DIM)
-               "  Tip: If terminal symbols look strange (e.g. <-[1;32m), type C on"
+               "  Tip: If color symbols look strange (like <-[1;32m), type C on"
                FUNCTION TRIM(C-RST)
            DISPLAY FUNCTION TRIM(C-DIM)
-               "       the Main Menu to switch to Classic Plain-ASCII Mode!"
+               "       the Main Menu to switch to Clean Plain-ASCII Mode!"
                FUNCTION TRIM(C-RST)
            DISPLAY " "
            DISPLAY FUNCTION TRIM(C-YLW)
-               "  Enter your Engineer Callsign (or press ENTER for GRACE-H): "
+               "  What name should we print on your learner badge? (ENTER = GRACE-H): "
                FUNCTION TRIM(C-RST) WITH NO ADVANCING
            ACCEPT WS-PLAYER-NAME
            IF WS-PLAYER-NAME = SPACES
@@ -252,10 +233,9 @@
            END-IF
            DISPLAY " "
            DISPLAY FUNCTION TRIM(C-GRN)
-               "  Access Granted! Badge issued to Engineer "
-               FUNCTION TRIM(WS-PLAYER-NAME) "."
+               "  Welcome aboard, " FUNCTION TRIM(WS-PLAYER-NAME)
+               "! Start at [1] on the Main Menu."
                FUNCTION TRIM(C-RST)
-           DISPLAY "  (Named in tribute to Rear Admiral Grace Hopper, pioneer of COBOL!)"
            PERFORM 0900-SAVE-GAME-QUIET
            PERFORM 9000-PRESS-ENTER.
 
@@ -269,14 +249,14 @@
                "+====================================================================+"
                FUNCTION TRIM(C-RST)
            DISPLAY FUNCTION TRIM(C-GRN) "| " FUNCTION TRIM(C-WHT)
-               "IRON-7090 MAINFRAME CONSOLE"
+               "COBOL QUEST // ZERO-TO-MASTER CONSOLE"
                FUNCTION TRIM(C-DIM)
-               "             [100% Powered by GnuCOBOL] "
+               "      [100% Written in COBOL] "
                FUNCTION TRIM(C-GRN) "|" FUNCTION TRIM(C-RST)
            DISPLAY FUNCTION TRIM(C-GRN)
                "+--------------------------------------------------------------------+"
                FUNCTION TRIM(C-RST)
-           DISPLAY "  Engineer : " FUNCTION TRIM(C-CYN) WS-PLAYER-NAME
+           DISPLAY "  Learner  : " FUNCTION TRIM(C-CYN) WS-PLAYER-NAME
                FUNCTION TRIM(C-RST)
                "   XP : " FUNCTION TRIM(C-YLW) WS-XP-FMT
                FUNCTION TRIM(C-RST)
@@ -284,33 +264,33 @@
                FUNCTION TRIM(C-RST)
            DISPLAY "  Rank     : " FUNCTION TRIM(C-GRN) WS-RANK-TITLE
                FUNCTION TRIM(C-RST)
-               "   Cores  : [" FUNCTION TRIM(C-GRN) WS-PROGRESS-BAR
+               "   Mastery: [" FUNCTION TRIM(C-GRN) WS-PROGRESS-BAR
                FUNCTION TRIM(C-RST) "] " WS-CORES-ONLINE "/8"
            DISPLAY FUNCTION TRIM(C-GRN)
                "+--------------------------------------------------------------------+"
                FUNCTION TRIM(C-RST)
            DISPLAY "  " FUNCTION TRIM(C-YLW) "[1]" FUNCTION TRIM(C-RST)
-               " Story Missions       - Learn COBOL across 8 Chapters + Boss Job"
+               " Zero-to-Master Lessons - 8 Step-by-Step Chapters + Adaptive Code"
            DISPLAY "  " FUNCTION TRIM(C-YLW) "[2]" FUNCTION TRIM(C-RST)
-               " Interactive PIC Lab  - Test PIC masks & fixed-point math live!"
+               " Interactive PIC Lab    - Test storage-box shapes & rounding live!"
            DISPLAY "  " FUNCTION TRIM(C-YLW) "[3]" FUNCTION TRIM(C-RST)
-               " COBOL Code Generator - Build & run your own my_sandbox.cob file"
+               " COBOL Code Generator   - Build & run your own my_sandbox.cob file"
            DISPLAY "  " FUNCTION TRIM(C-YLW) "[4]" FUNCTION TRIM(C-RST)
-               " Bug Hunter Arcade    - Diagnose real production COBOL bugs"
+               " Bug Hunter Arcade      - Spot 4 famous real-world COBOL bugs"
            DISPLAY "  " FUNCTION TRIM(C-YLW) "[5]" FUNCTION TRIM(C-RST)
-               " Pocket Cheat-Sheet   - Quick syntax cards & COBOL history"
+               " Glossary & Cheat-Sheet - Beginner definitions & quick syntax cards"
            DISPLAY "  " FUNCTION TRIM(C-YLW) "[6]" FUNCTION TRIM(C-RST)
-               " Save / Inspect File  - View real COBOL sequential savegame.dat"
+               " Save / Inspect File    - Peek inside your COBOL savegame.dat"
            DISPLAY "  " FUNCTION TRIM(C-YLW) "[C]" FUNCTION TRIM(C-RST)
-               " Toggle Color Mode    - Currently: " WS-COLOR-MODE
-               " (Y = ANSI Phosphor, N = Plain)"
+               " Toggle Color Mode      - Currently: " WS-COLOR-MODE
+               " (Y = Phosphor, N = Plain)"
            DISPLAY "  " FUNCTION TRIM(C-YLW) "[Q]" FUNCTION TRIM(C-RST)
-               " Log Off & Auto-Save"
+               " Save & Quit"
            DISPLAY FUNCTION TRIM(C-GRN)
                "+====================================================================+"
                FUNCTION TRIM(C-RST)
-           DISPLAY FUNCTION TRIM(C-CYN) "  IRON-7090> " FUNCTION TRIM(C-RST)
-               WITH NO ADVANCING
+           DISPLAY FUNCTION TRIM(C-CYN) "  SELECT (1-6, C, Q)> "
+               FUNCTION TRIM(C-RST) WITH NO ADVANCING
            MOVE SPACES TO WS-MENU-CHOICE
            ACCEPT WS-MENU-CHOICE
            MOVE FUNCTION UPPER-CASE(FUNCTION TRIM(WS-MENU-CHOICE))
@@ -348,19 +328,18 @@
                WHEN "Q"
                WHEN "QUIT"
                WHEN "EXIT"
-               WHEN "0"
                    SET SHUTDOWN-NOW TO TRUE
                WHEN SPACES
                    CONTINUE
                WHEN OTHER
                    DISPLAY FUNCTION TRIM(C-RED)
-                       "  Unknown command. Type 1-6, C, or Q."
+                       "  Please type 1-6, C, or Q and press ENTER."
                        FUNCTION TRIM(C-RST)
                    PERFORM 9000-PRESS-ENTER
            END-EVALUATE.
 
 *> ===================================================================
-*> 0400-RECALC-RANK-AND-BAR: Uses EVALUATE TRUE & PERFORM VARYING!
+*> 0400-RECALC-RANK-AND-BAR: Zero-to-Master Progression Ladder!
 *> ===================================================================
        0400-RECALC-RANK-AND-BAR.
            MOVE WS-PLAYER-XP     TO WS-XP-FMT
@@ -378,20 +357,22 @@
            END-PERFORM
 
            EVALUATE TRUE
-               WHEN WS-PLAYER-XP >= 1400
-                   MOVE "GRANDMASTER OF BIG IRON"    TO WS-RANK-TITLE
-               WHEN WS-PLAYER-XP >= 1000
-                   MOVE "SENIOR CICS ARCHITECT"      TO WS-RANK-TITLE
-               WHEN WS-PLAYER-XP >= 700
-                   MOVE "BATCH PROCESSING SORCERER"  TO WS-RANK-TITLE
-               WHEN WS-PLAYER-XP >= 450
-                   MOVE "PROCEDURE DIVISION KNIGHT"  TO WS-RANK-TITLE
-               WHEN WS-PLAYER-XP >= 250
-                   MOVE "WORKING-STORAGE APPRENTICE" TO WS-RANK-TITLE
-               WHEN WS-PLAYER-XP >= 100
-                   MOVE "TAPE DRIVE OPERATOR"        TO WS-RANK-TITLE
+               WHEN WS-PLAYER-XP >= 1500
+                   MOVE "COBOL GRANDMASTER"          TO WS-RANK-TITLE
+               WHEN WS-PLAYER-XP >= 1100
+                   MOVE "SENIOR MAINFRAME ARCHITECT" TO WS-RANK-TITLE
+               WHEN WS-PLAYER-XP >= 800
+                   MOVE "LOOP & BATCH CONDUCTOR"     TO WS-RANK-TITLE
+               WHEN WS-PLAYER-XP >= 550
+                   MOVE "LOGIC & LEVEL-88 NAVIGATOR" TO WS-RANK-TITLE
+               WHEN WS-PLAYER-XP >= 350
+                   MOVE "DECIMAL MATHCRAFTER"        TO WS-RANK-TITLE
+               WHEN WS-PLAYER-XP >= 180
+                   MOVE "STORAGE BOX BUILDER"        TO WS-RANK-TITLE
+               WHEN WS-PLAYER-XP >= 60
+                   MOVE "FIRST-LINE APPRENTICE"      TO WS-RANK-TITLE
                WHEN OTHER
-                   MOVE "PUNCH-CARD INTERN"          TO WS-RANK-TITLE
+                   MOVE "NEWCOMER (ZERO EXP)"        TO WS-RANK-TITLE
            END-EVALUATE.
 
        0450-AWARD-XP.
@@ -404,8 +385,7 @@
            PERFORM 0400-RECALC-RANK-AND-BAR
            DISPLAY FUNCTION TRIM(C-GRN)
                "  *** +" FUNCTION TRIM(WS-XP-GAIN-FMT)
-               " XP EARNED! | Current Rank: "
-               FUNCTION TRIM(WS-RANK-TITLE) " ***"
+               " XP | Rank: " FUNCTION TRIM(WS-RANK-TITLE) " ***"
                FUNCTION TRIM(C-RST).
 
 *> ===================================================================
@@ -420,7 +400,7 @@
            DISPLAY "  Progress saved to " FUNCTION TRIM(C-YLW) "savegame.dat"
                FUNCTION TRIM(C-RST) " using COBOL LINE SEQUENTIAL I/O!"
            DISPLAY " "
-           DISPLAY "  Here is the actual COBOL FD (File Description) layout:"
+           DISPLAY "  Here is how COBOL stores your profile in fixed-size boxes:"
            DISPLAY FUNCTION TRIM(C-GRN)
                "    01 SAVE-RECORD." FUNCTION TRIM(C-RST)
            DISPLAY "       05 SR-MAGIC         PIC X(10) -> [" SR-MAGIC "]"
@@ -431,8 +411,8 @@
            DISPLAY "       05 SR-MISSIONS      PIC X(8)  -> [" SR-MISSIONS "]"
            DISPLAY "       05 SR-COLOR-MODE    PIC X     -> [" SR-COLOR-MODE "]"
            DISPLAY " "
-           DISPLAY "  Notice how COBOL fixed-width records need NO commas or JSON"
-           DISPLAY "  brackets -- every field occupies an exact byte slice!"
+           DISPLAY "  Notice how COBOL fixed-width records need NO commas or brackets"
+           DISPLAY "  -- every box has an exact width defined by its PIC clause!"
            DISPLAY " "
            DISPLAY "  Type " FUNCTION TRIM(C-RED) "RESET" FUNCTION TRIM(C-RST)
                " to wipe progress, or press ENTER to return: "
@@ -444,7 +424,7 @@
                MOVE "NNNNNNNN" TO WS-MISSION-TABLE
                PERFORM 0900-SAVE-GAME-QUIET
                DISPLAY FUNCTION TRIM(C-YLW)
-                   "  Profile reset to 0 XP (Punch-Card Intern)."
+                   "  Profile reset to 0 XP (NEWCOMER)."
                    FUNCTION TRIM(C-RST)
                PERFORM 9000-PRESS-ENTER
            END-IF.
@@ -466,291 +446,11 @@
        0990-SIGN-OFF-BANNER.
            DISPLAY " "
            DISPLAY FUNCTION TRIM(C-GRN)
-               "  [SESSION SAVED] Thank you for playing COBOL QUEST, Engineer "
+               "  [SESSION SAVED] Great work today, "
                FUNCTION TRIM(WS-PLAYER-NAME) "!"
                FUNCTION TRIM(C-RST)
-           DISPLAY "  Explore the examples/ folder to read and compile real .cob files!"
+           DISPLAY "  Open the examples/ folder anytime to inspect real .cob programs!"
            DISPLAY " ".
-
-*> ===================================================================
-*> 8000-LIVE-CODE-CHALLENGE: Interactive COBOL Statement Analyzer!
-*> ===================================================================
-       8000-LIVE-CODE-CHALLENGE.
-           MOVE "N" TO WS-CODE-SOLVED
-           DISPLAY " "
-           DISPLAY FUNCTION TRIM(C-YLW)
-               "  +---------------- LIVE COBOL CODING TERMINAL ----------------+"
-               FUNCTION TRIM(C-RST)
-           DISPLAY "  TASK: " WS-PROMPT-DESC
-           DISPLAY FUNCTION TRIM(C-DIM)
-               "  (Type HINT for a clue, or SHOW to reveal & explain the answer)"
-               FUNCTION TRIM(C-RST)
-
-           PERFORM UNTIL WS-CODE-SOLVED = "Y"
-               DISPLAY FUNCTION TRIM(C-GRN) "  CODE> " FUNCTION TRIM(C-RST)
-                   WITH NO ADVANCING
-               MOVE SPACES TO WS-CODE-INPUT
-               ACCEPT WS-CODE-INPUT
-               MOVE FUNCTION UPPER-CASE(FUNCTION TRIM(WS-CODE-INPUT))
-                   TO WS-CODE-UPPER
-
-               IF WS-CODE-UPPER = SPACES
-                   ADD 1 TO WS-EMPTY-GUARD
-                   IF WS-EMPTY-GUARD > 15
-                       MOVE "Y" TO WS-CODE-SOLVED
-                       SET SHUTDOWN-NOW TO TRUE
-                   END-IF
-               ELSE
-                   MOVE 0 TO WS-EMPTY-GUARD
-               END-IF
-
-               EVALUATE WS-CODE-UPPER
-                   WHEN SPACES
-                       CONTINUE
-                   WHEN "HINT"
-                       DISPLAY FUNCTION TRIM(C-CYN) "  [HINT] "
-                           FUNCTION TRIM(WS-HINT-TEXT) FUNCTION TRIM(C-RST)
-                   WHEN "SHOW"
-                   WHEN "ANSWER"
-                       DISPLAY FUNCTION TRIM(C-YLW) "  [SOLUTION] "
-                           FUNCTION TRIM(WS-MODEL-ANSWER) FUNCTION TRIM(C-RST)
-                       DISPLAY "  Type that COBOL statement at CODE> to execute it!"
-                   WHEN OTHER
-                       PERFORM 8100-CHECK-CHALLENGE-SYNTAX
-               END-EVALUATE
-           END-PERFORM.
-
-       8100-CHECK-CHALLENGE-SYNTAX.
-           MOVE 0 TO WS-CNT-1 WS-CNT-2 WS-CNT-3 WS-CNT-4 WS-CNT-5 WS-CNT-EQ
-           MOVE FUNCTION LENGTH(FUNCTION TRIM(WS-CODE-UPPER)) TO WS-TRIM-LEN
-           IF WS-TRIM-LEN > 0
-               MOVE WS-CODE-UPPER(WS-TRIM-LEN : 1) TO WS-LAST-CH
-           ELSE
-               MOVE SPACE TO WS-LAST-CH
-           END-IF
-
-           EVALUATE WS-CHALLENGE-ID
-               *> Mission 1: PROGRAM-ID. VAULT.
-               WHEN 1
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-1 FOR ALL "PROGRAM-ID"
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-2 FOR ALL "VAULT"
-                   IF WS-CNT-1 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Start with PROGRAM-ID. (don't forget the hyphen!)"
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-CNT-2 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Name the program VAULT (e.g., PROGRAM-ID. VAULT.)."
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-LAST-CH NOT = "."
-                       DISPLAY FUNCTION TRIM(C-YLW)
-                           "  [ALMOST!] You forgot the period (.) at the very end!"
-                           FUNCTION TRIM(C-RST)
-                   ELSE
-                       MOVE "Y" TO WS-CODE-SOLVED
-                   END-IF
-
-               *> Mission 2: 01 BALANCE PIC 9(5)V99.
-               WHEN 2
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-1 FOR ALL "01 "
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-2 FOR ALL "BALANCE"
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-3 FOR ALL "PIC"
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-4 FOR ALL "9(5)V99"
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-5 FOR ALL "99999V99"
-                   IF WS-CNT-1 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Begin with level number 01 followed by a space."
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-CNT-2 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Name the variable BALANCE."
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-CNT-3 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Include the PIC (or PICTURE) clause!"
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-CNT-4 = 0 AND WS-CNT-5 = 0
-                       DISPLAY FUNCTION TRIM(C-YLW)
-                           "  [PIC TIP] Use 9(5)V99 -- V is the implied decimal point!"
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-LAST-CH NOT = "."
-                       DISPLAY FUNCTION TRIM(C-YLW)
-                           "  [ALMOST!] Every DATA DIVISION entry must end with a period (.)."
-                           FUNCTION TRIM(C-RST)
-                   ELSE
-                       MOVE "Y" TO WS-CODE-SOLVED
-                   END-IF
-
-               *> Mission 3: MOVE 500 TO BALANCE.
-               WHEN 3
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-1 FOR ALL "MOVE "
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-2 FOR ALL "500"
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-3 FOR ALL " TO "
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-4 FOR ALL "BALANCE"
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-EQ FOR ALL "="
-                   IF WS-CNT-EQ > 0
-                       DISPLAY FUNCTION TRIM(C-YLW)
-                           "  [COBOL IDIOM] Instead of '=', COBOL uses: MOVE 500 TO BALANCE."
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-CNT-1 = 0 OR WS-CNT-3 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Use the verb MOVE <value> TO <variable>."
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-CNT-2 = 0 OR WS-CNT-4 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Move 500 into BALANCE: MOVE 500 TO BALANCE."
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-LAST-CH NOT = "."
-                       DISPLAY FUNCTION TRIM(C-YLW)
-                           "  [ALMOST!] Add a period (.) at the end of the sentence!"
-                           FUNCTION TRIM(C-RST)
-                   ELSE
-                       MOVE "Y" TO WS-CODE-SOLVED
-                   END-IF
-
-               *> Mission 4: ADD INTEREST TO BALANCE ROUNDED. (or COMPUTE)
-               WHEN 4
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-1 FOR ALL "ADD "
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-5 FOR ALL "COMPUTE "
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-2 FOR ALL "INTEREST"
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-3 FOR ALL "BALANCE"
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-4 FOR ALL "ROUNDED"
-                   IF WS-CNT-1 = 0 AND WS-CNT-5 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Start with ADD (or COMPUTE)!"
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-CNT-2 = 0 OR WS-CNT-3 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Reference both INTEREST and BALANCE."
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-CNT-4 = 0
-                       DISPLAY FUNCTION TRIM(C-YLW)
-                           "  [BANK RULE] Include the keyword ROUNDED so half-cents round up!"
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-LAST-CH NOT = "."
-                       DISPLAY FUNCTION TRIM(C-YLW)
-                           "  [ALMOST!] End your statement with a period (.)."
-                           FUNCTION TRIM(C-RST)
-                   ELSE
-                       MOVE "Y" TO WS-CODE-SOLVED
-                   END-IF
-
-               *> Mission 5: 88 VIP-CLIENT VALUE "Y".
-               WHEN 5
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-1 FOR ALL "88 "
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-2 FOR ALL "VIP-CLIENT"
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-3 FOR ALL "VALUE"
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-4 FOR ALL '"Y"'
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-5 FOR ALL "'Y'"
-                   IF WS-CNT-1 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Condition names use special level number 88!"
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-CNT-2 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Name the condition VIP-CLIENT."
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-CNT-3 = 0 OR (WS-CNT-4 = 0 AND WS-CNT-5 = 0)
-                       DISPLAY FUNCTION TRIM(C-YLW)
-                           '  [SYNTAX] Specify VALUE "Y" (quotes around Y).'
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-LAST-CH NOT = "."
-                       DISPLAY FUNCTION TRIM(C-YLW)
-                           "  [ALMOST!] Finish the 88-level entry with a period (.)."
-                           FUNCTION TRIM(C-RST)
-                   ELSE
-                       MOVE "Y" TO WS-CODE-SOLVED
-                   END-IF
-
-               *> Mission 6: PERFORM PRINT-LINE 5 TIMES.
-               WHEN 6
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-1 FOR ALL "PERFORM "
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-2 FOR ALL "PRINT-LINE"
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-3 FOR ALL "5"
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-4 FOR ALL "TIMES"
-                   IF WS-CNT-1 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Loops and paragraph calls in COBOL start with PERFORM."
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-CNT-2 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Target paragraph name is PRINT-LINE."
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-CNT-3 = 0 OR WS-CNT-4 = 0
-                       DISPLAY FUNCTION TRIM(C-YLW)
-                           "  [SYNTAX] Add '5 TIMES' after PRINT-LINE!"
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-LAST-CH NOT = "."
-                       DISPLAY FUNCTION TRIM(C-YLW)
-                           "  [ALMOST!] Don't forget the period (.) at the end!"
-                           FUNCTION TRIM(C-RST)
-                   ELSE
-                       MOVE "Y" TO WS-CODE-SOLVED
-                   END-IF
-
-               *> Mission 7: 05 MONTH-SALES PIC 9(6) OCCURS 12 TIMES.
-               WHEN 7
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-1 FOR ALL "05 "
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-2 FOR ALL "MONTH-SALES"
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-3 FOR ALL "PIC"
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-4 FOR ALL "OCCURS 12"
-                   IF WS-CNT-1 = 0 OR WS-CNT-2 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Start with: 05 MONTH-SALES ..."
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-CNT-3 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Give each element a picture: PIC 9(6)"
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-CNT-4 = 0
-                       DISPLAY FUNCTION TRIM(C-YLW)
-                           "  [TABLE TIP] Use OCCURS 12 TIMES to create a 12-element array!"
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-LAST-CH NOT = "."
-                       DISPLAY FUNCTION TRIM(C-YLW)
-                           "  [ALMOST!] End the table definition with a period (.)."
-                           FUNCTION TRIM(C-RST)
-                   ELSE
-                       MOVE "Y" TO WS-CODE-SOLVED
-                   END-IF
-
-               *> Mission 8A: OPEN INPUT PAYROLL-FILE.
-               WHEN 8
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-1 FOR ALL "OPEN "
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-2 FOR ALL "INPUT "
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-3 FOR ALL "PAYROLL-FILE"
-                   IF WS-CNT-1 = 0 OR WS-CNT-2 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] To read a file, use: OPEN INPUT <file-name>."
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-CNT-3 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [SYNTAX] Open PAYROLL-FILE: OPEN INPUT PAYROLL-FILE."
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-LAST-CH NOT = "."
-                       DISPLAY FUNCTION TRIM(C-YLW)
-                           "  [ALMOST!] Add the closing period (.)!"
-                           FUNCTION TRIM(C-RST)
-                   ELSE
-                       MOVE "Y" TO WS-CODE-SOLVED
-                   END-IF
-
-               *> Boss Final Blow: CLOSE PAYROLL-FILE.
-               WHEN 9
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-1 FOR ALL "CLOSE "
-                   INSPECT WS-CODE-UPPER TALLYING WS-CNT-2 FOR ALL "PAYROLL-FILE"
-                   IF WS-CNT-1 = 0 OR WS-CNT-2 = 0
-                       DISPLAY FUNCTION TRIM(C-RED)
-                           "  [BOSS SHIELD] Release the tape lock with: CLOSE PAYROLL-FILE."
-                           FUNCTION TRIM(C-RST)
-                   ELSE IF WS-LAST-CH NOT = "."
-                       DISPLAY FUNCTION TRIM(C-YLW)
-                           "  [ALMOST!] Put the final period (.) to seal the batch!"
-                           FUNCTION TRIM(C-RST)
-                   ELSE
-                       MOVE "Y" TO WS-CODE-SOLVED
-                   END-IF
-           END-EVALUATE.
 
        9000-PRESS-ENTER.
            DISPLAY " "
@@ -759,6 +459,8 @@
                WITH NO ADVANCING
            ACCEPT WS-PAUSE-DUMMY.
 
-       *> Modular Procedure Copybooks for Story Missions & Interactive Labs
-       COPY "missions-proc.cpy".
+       *> Modular Procedure Copybooks
+       COPY "drill-engine-proc.cpy".
+       COPY "chapters-1-to-4.cpy".
+       COPY "chapters-5-to-8.cpy".
        COPY "labs-proc.cpy".

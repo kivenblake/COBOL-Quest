@@ -347,8 +347,9 @@
            PERFORM UNTIL WS-REF-CHOICE = "B" OR SHUTDOWN-NOW
                PERFORM 0150-CLEAR-SCREEN
                DISPLAY FUNCTION TRIM(C-CYN)
-                   "+============= MAINFRAME POCKET REFERENCE DECK ================+"
+                   "+========= BEGINNER GLOSSARY & POCKET CHEAT-SHEET DECK ========+"
                    FUNCTION TRIM(C-RST)
+               DISPLAY "  [0] Never Coded Before? Plain-English Programming Glossary!"
                DISPLAY "  [1] Minimal Program Skeleton (Copy-Paste Ready!)"
                DISPLAY "  [2] Complete PIC (PICTURE) Symbol Decoder"
                DISPLAY "  [3] Essential COBOL Verbs & Scope Terminators"
@@ -369,6 +370,21 @@
                END-IF
 
                EVALUATE WS-REF-CHOICE
+                   WHEN "0"
+                       DISPLAY " "
+                       DISPLAY FUNCTION TRIM(C-GRN)
+                           "  --- PLAIN-ENGLISH GLOSSARY FOR BRAND-NEW CODERS ---"
+                           FUNCTION TRIM(C-RST)
+                       DISPLAY "  * PROGRAM   : A top-to-bottom recipe of instructions."
+                       DISPLAY "  * COMPILER  : A translator (like cobc) that turns your"
+                       DISPLAY "                English COBOL file into a runnable program."
+                       DISPLAY "  * STATEMENT : A single instruction (starts with a VERB!)."
+                       DISPLAY '  * STRING    : Exact text inside quotes, like "HELLO".'
+                       DISPLAY "  * VARIABLE  : A named storage box in memory (like SCORE)."
+                       DISPLAY "  * CONDITION : A true/false check used in IF or UNTIL."
+                       DISPLAY "  * LOOP      : Repeating steps automatically (PERFORM)."
+                       DISPLAY "  * TABLE     : A numbered row of boxes (OCCURS 12 TIMES)."
+                       PERFORM 9000-PRESS-ENTER
                    WHEN "1"
                        DISPLAY " "
                        DISPLAY FUNCTION TRIM(C-GRN)
@@ -425,7 +441,6 @@
                        DISPLAY "    .cob source file waiting for you in the examples/ folder!"
                        PERFORM 9000-PRESS-ENTER
                    WHEN "B"
-                   WHEN "0"
                    WHEN "Q"
                        MOVE "B" TO WS-REF-CHOICE
                    WHEN OTHER

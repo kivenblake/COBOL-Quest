@@ -62,22 +62,22 @@ docker run -it --rm cobol-quest
 
 ## What You'll Do & Learn Inside COBOL QUEST
 
-You are a newly badged **Mainframe Engineer** in Basement Sub-Level 4 tasked with bringing **8 offline COBOL cores** on Mainframe **IRON-7090** back online:
+Designed for someone with **zero prior programming experience**, COBOL QUEST guides you from writing your very first `DISPLAY` line all the way to batch file processing:
 
 | Mode | Description |
 | :--- | :--- |
-| **`[1]` 8 Story Missions + Boss Battle** | Bite-sized visual lessons, diagnostic quizzes, and a **Live COBOL Coding Terminal (`CODE>`)** where you type real COBOL statements with smart syntax feedback — culminating in a 3-wave showdown against **`ABEND-S0C7`** during the Midnight Payroll Batch! |
+| **`[1]` Zero-to-Master Curriculum (8 Chapters)** | Multi-page plain-English lessons (no prior coding jargon!), **2-variant Concept Quizzes** (wrong answers give a full explanation + a fresh follow-up question), and **3-variant Adaptive Coding Drills** with **non-spoiler `HINT` clues** and **2-try productive-failure walkthroughs** that explain why a solution works and rotate to a new variant for you to solve solo! |
 | **`[2]` Interactive `PIC` & Math Lab** | Type any signed decimal (like `-2000.00` or `1234.567`) and watch real COBOL `MOVE` and `COMPUTE` statements format it across `PIC 9(6)`, raw 7-byte `PIC 9(5)V99` RAM (`REDEFINES`), `PIC $***,**9.99-` check protection, and `PIC ZZZ,ZZ9.99CR` accounting format! |
 | **`[3]` Live `.cob` Code Generator** | Customize your own compound-interest program, watch COBOL write a real runnable **`my_sandbox.cob`** file to disk, and execute it live! |
 | **`[4]` Bug Hunter Arcade** | Diagnose 4 famous real-world production mainframe bugs (rogue periods inside `IF`, Y2K `PIC 99` rollover, edited vs. operational `PIC`, and the Column-73 punch-card cliff) for bonus XP and ranks! |
-| **`[5]` Pocket Reference Deck** | Built-in syntax cheat-sheets for Divisions, `PIC` symbols, Verbs, Loops, and Rear Admiral Grace Hopper's COBOL history. |
+| **`[5]` Beginner Glossary & Cheat-Sheet** | Plain-English definitions of core programming concepts (`Program`, `String`, `Variable`, `Loop`, `Compiler`) plus syntax cards for Divisions, `PIC` symbols, Verbs, and Grace Hopper history. |
 | **`[6]` Save & FD Record Inspector** | Progress auto-saves to **`savegame.dat`** using genuine COBOL `LINE SEQUENTIAL` file I/O — inspect the exact fixed-width byte slices right inside the app! |
 
 ---
 
 ## Companion COBOL Programs (`examples/`)
 
-Every mission in the game has a matching, heavily-commented `.cob` source file in `examples/` (plus precompiled binaries in the Windows & Linux bundles!):
+Every topic in the curriculum has a matching, heavily-commented `.cob` source file in `examples/` (plus precompiled binaries in the Windows & Linux bundles!):
 
 1. **`examples/01-hello-mainframe.cob`** — Authentic 1960s 80-column Punch-Card Fixed-Format COBOL!
 2. **`examples/02-pic-showcase.cob`** — `WORKING-STORAGE` & `PIC` check-protection / `CR` formatting
@@ -110,19 +110,24 @@ scripts\build-windows.bat
 
 ```text
 COBOL-Quest/
-├── Play-COBOL-Quest.bat             # Windows double-click launcher
+├── COBOL-Quest.exe                  # Windows root double-click executable
+├── Play-COBOL-Quest.bat             # Windows batch launcher
 ├── Play-COBOL-Quest.command         # macOS Finder double-click launcher
 ├── Play-COBOL-Quest.sh              # Universal Linux & macOS launcher
 ├── Makefile                         # make run / examples / test / install-deps
 ├── Dockerfile                       # Zero-host-install container option
-├── releases/                        # Downloadable Windows, Linux & macOS bundles
+├── runtime/                         # Prebuilt Windows x64 & Linux x86_64 binaries
+├── releases/                        # Standalone downloadable OS bundles
 ├── src/
-│   ├── cobol-quest.cob              # Main COBOL QUEST RPG & Interactive Tutor
+│   ├── cobol-quest.cob              # Main COBOL QUEST v2.0 Console & File I/O
 │   └── copybooks/
-│       ├── quest-state.cpy          # RPG ranks, XP, badges & REDEFINES table
+│       ├── quest-state.cpy          # Zero-to-Master ranks, XP & chapter table
 │       ├── ansi-ui.cpy              # IBM 3270 phosphor ANSI color palette
-│       ├── missions-proc.cpy        # 8 Story Missions + 3-Wave Boss Battle
-│       └── labs-proc.cpy            # Live PIC Lab, Code Generator, Bug Arcade & Ref
+│       ├── drill-engine-data.cpy    # Data tables for multi-variant quizzes & drills
+│       ├── drill-engine-proc.cpy    # Non-spoiler hints, mistake coach & variant rotator
+│       ├── chapters-1-to-4.cpy      # Chapters 1-4: Zero-coding start -> MOVE/ACCEPT
+│       ├── chapters-5-to-8.cpy      # Chapters 5-8: Math, IF/88, PERFORM, Files & Exam
+│       └── labs-proc.cpy            # Live PIC Lab, Code Generator, Arcade & Glossary
 ├── examples/                        # 8 standalone runnable COBOL programs + data
 ├── scripts/                         # Windows (.bat/.ps1) & Unix (.sh) setup/build scripts
 └── tests/smoke-test.sh              # Automated full-playthrough & compiler test suite

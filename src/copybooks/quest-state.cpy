@@ -1,7 +1,7 @@
 *> ===================================================================
 *> COPYBOOK: quest-state.cpy
-*> PURPOSE : Working-Storage player progression, RPG ranks, and
-*>           subsystem status table for COBOL QUEST.
+*> PURPOSE : Working-Storage player progression, Zero-to-Master ranks,
+*>           and 8-chapter curriculum table for COBOL QUEST.
 *> ===================================================================
 
        01  WS-GAME-STATE.
@@ -21,21 +21,21 @@
            05  WS-XP-FMT               PIC ZZZ,ZZ9.
            05  WS-STREAK-FMT           PIC ZZ9.
            05  WS-RANK-TITLE           PIC X(26)
-                                       VALUE "PUNCH-CARD INTERN".
+                                       VALUE "NEWCOMER (ZERO EXP)".
            05  WS-CORES-ONLINE         PIC 9     VALUE 0.
            05  WS-PROGRESS-BAR         PIC X(16) VALUE SPACES.
 
        01  WS-SUBSYSTEM-NAMES.
-           05  FILLER PIC X(34) VALUE "CORE-01: THE FOUR DIVISIONS       ".
-           05  FILLER PIC X(34) VALUE "CORE-02: WORKING-STORAGE & PIC    ".
-           05  FILLER PIC X(34) VALUE "CORE-03: MOVE, DISPLAY & ACCEPT   ".
-           05  FILLER PIC X(34) VALUE "CORE-04: PENNY-PERFECT MATH       ".
-           05  FILLER PIC X(34) VALUE "CORE-05: IF, EVALUATE & LEVEL-88  ".
-           05  FILLER PIC X(34) VALUE "CORE-06: PERFORM & LOOPS          ".
-           05  FILLER PIC X(34) VALUE "CORE-07: OCCURS TABLES & STRINGS  ".
-           05  FILLER PIC X(34) VALUE "CORE-08: FILES & BOSS BATCH JOB   ".
+           05  FILLER PIC X(42) VALUE "WHAT IS CODE? DISPLAY & FIRST PROGRAM     ".
+           05  FILLER PIC X(42) VALUE "THE 4-ROOM BLUEPRINT & HUMAN COMMENTS     ".
+           05  FILLER PIC X(42) VALUE "STORAGE BOXES: VARIABLES & PIC CLAUSES    ".
+           05  FILLER PIC X(42) VALUE "MOVING DATA & KEYBOARD INPUT (MOVE/ACCEPT)".
+           05  FILLER PIC X(42) VALUE "TEACHING COMPUTERS MATH & ROUNDING        ".
+           05  FILLER PIC X(42) VALUE "DECISIONS: IF, END-IF & LEVEL-88 SWITCHES ".
+           05  FILLER PIC X(42) VALUE "REPEATING WORK: PARAGRAPHS & PERFORM LOOPS".
+           05  FILLER PIC X(42) VALUE "LISTS (OCCURS), FILES & FINAL MASTERY EXAM".
        01  WS-SUBSYSTEM-LIST REDEFINES WS-SUBSYSTEM-NAMES.
-           05  WS-SUBSYSTEM-LABEL      PIC X(34) OCCURS 8 TIMES.
+           05  WS-SUBSYSTEM-LABEL      PIC X(42) OCCURS 8 TIMES.
 
        01  WS-SAVE-STATUS              PIC XX    VALUE "00".
        01  WS-SANDBOX-STATUS           PIC XX    VALUE "00".
